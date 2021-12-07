@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Question 3 of past paper 20/21</title>
+</head>
+<body>
+<script>
+    // var uri_1 = "./request.php";
+    var request = new XMLHttpRequest();
+    function makeReq(i_uri) {
+        request.open("GET", i_uri, true);
+        request.onreadystatechange = showResult; //callback
+        request.send(null);
+    }
+    function showResult(){
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var serverData = request.responseText;
+                var html = "<table border=1>";
+                var resultArray = JSON.parse(serverData);
+                for (let x in resultArray) {
+                    html += "<tr>";
+                    let innerObj = resultArray[x];                    
+                    for (let y in innerObj) {
+                        html += "<td>" + innerObj[y] + "</td>";
+                    }
+                    html += "</tr>";
+                }
+                html += "</table>";
+                console.log(html);
+                let elem = document.getElementById("displayArea");
+                elem.innerHTML = html;
+            }
+        }
+    }
+</script>
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+<button id="button1" onclick="makeReq('./request.php')">Click Me</button>
+<div id="displayArea"></div>
+</body>
+</html>
